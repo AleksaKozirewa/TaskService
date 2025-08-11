@@ -1,0 +1,36 @@
+## Основные игнорируемые элементы
+bin/
+obj/
+.vs/
+.DS_Store
+*.user
+*.suo
+*.cache
+*.swp
+
+## Файлы сборки
+[Bb]in/
+[Oo]bj/
+out/
+msbuild.log
+
+## NuGet
+.nuget/
+[Nn]u[Pp]ackages/
+*.nupkg
+packages/
+
+## Docker
+docker-compose.*.yml
+.dockerignore
+.env
+
+## Тесты
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+
+## Пользовательские файлы
+*.log
+*.tmp
+*.bak
