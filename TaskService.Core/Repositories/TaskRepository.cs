@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskService.Core.Data;
 using TaskService.Core.Entities;
 using TaskService.Core.Interfaces;
@@ -78,7 +73,7 @@ namespace TaskService.Core.Repositories
             {
                 task.Status = TaskStatus.Overdue;
                 task.UpdatedAt = now;
-                _logger.LogInformation("Marking task {TaskId} as overdue", task.Id);
+                _logger.LogInformation("Задача ID {TaskId} помечена как просроченная.", task.Id);
             }
 
             await _context.SaveChangesAsync();

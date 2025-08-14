@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using Moq;
 using TaskService.Core.Entities;
 using TaskService.Core.Interfaces;
@@ -10,14 +9,12 @@ namespace TaskService.Tests
     public class TaskServiceTests
     {
         private readonly Mock<ITaskRepository> _mockRepository;
-        private readonly Mock<ILogger<TasksService>> _mockLogger;
         private readonly TasksService _service;
 
         public TaskServiceTests()
         {
             _mockRepository = new Mock<ITaskRepository>();
-            _mockLogger = new Mock<ILogger<TasksService>>();
-            _service = new TasksService(_mockRepository.Object, _mockLogger.Object);
+            _service = new TasksService(_mockRepository.Object);
         }
 
         [Fact]

@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskService.Core.Entities;
 using TaskService.Core.Interfaces;
 using TaskStatus = TaskService.Core.Entities.TaskStatus;
@@ -13,12 +8,10 @@ namespace TaskService.Core.Services
     public class TasksService : ITaskService
     {
         private readonly ITaskRepository _repository;
-        private readonly ILogger<TasksService> _logger;
 
-        public TasksService(ITaskRepository repository, ILogger<TasksService> logger)
+        public TasksService(ITaskRepository repository)
         {
             _repository = repository;
-            _logger = logger;
         }
 
         public async Task<TaskEntity> CreateTaskAsync(string title, string description, DateTime dueDate)

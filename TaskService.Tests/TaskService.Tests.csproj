@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UnitTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskService.API\TaskService.API.csproj" />
     <ProjectReference Include="..\TaskService.Core\TaskService.Core.csproj" />
   </ItemGroup>

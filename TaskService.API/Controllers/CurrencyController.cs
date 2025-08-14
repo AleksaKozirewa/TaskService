@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using TaskService.API.Models.Currency;
 
@@ -37,13 +36,13 @@ namespace TaskService.API.Controllers
 
             if (string.IsNullOrEmpty(apiUrl))
             {
-                _logger.LogError("Currency API URL is not configured");
-                return StatusCode(500, "Currency service configuration error");
+                _logger.LogError("Не задан API URL для получения курсов валют.");
+                return StatusCode(500, "Ошибка конфигурации сервиса валют.");
             }
 
             if (_cache.TryGetValue(cacheKey, out CurrencyRates cachedRates))
             {
-                _logger.LogInformation("Returning cached currency rates (Cache duration: {CacheTime} minutes)", cacheTimeMinutes);
+                _logger.LogInformation("Возвращаем кэшированные курсы валют (время кэширования: {CacheTime} минут).", cacheTimeMinutes);
                 return Ok(cachedRates);
             }
 
@@ -51,7 +50,7 @@ namespace TaskService.API.Controllers
 
             try
             {
-                _logger.LogInformation("Fetching currency rates from {ApiUrl}", apiUrl);
+                _logger.LogInformation("Запрашиваем актуальные курсы валют с {ApiUrl}", apiUrl);
                 var response = await client.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
 
@@ -62,24 +61,24 @@ namespace TaskService.API.Controllers
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(cacheTimeMinutes));
 
                 _cache.Set(cacheKey, rates, cacheOptions);
-                _logger.LogInformation("Fetched fresh currency rates and cached for {CacheTime} minutes", cacheTimeMinutes);
+                _logger.LogInformation("Получены новые курсы валют и сохранены в кэш на {CacheTime} минут.", cacheTimeMinutes);
 
                 return Ok(rates);
             }
             catch (HttpRequestException httpEx)
             {
-                _logger.LogError(httpEx, "HTTP error while fetching currency rates from {ApiUrl}", apiUrl);
-                return StatusCode(502, "Unable to connect to currency service");
+                _logger.LogError(httpEx, "Ошибка HTTP при запросе курсов валют с {ApiUrl}.", apiUrl);
+                return StatusCode(502, "Не удалось подключиться к сервису валют.");
             }
             catch (JsonException jsonEx)
             {
-                _logger.LogError(jsonEx, "Error parsing currency rates response");
-                return StatusCode(502, "Invalid currency data received");
+                _logger.LogError(jsonEx, "Ошибка парсинга ответа с курсами валют.");
+                return StatusCode(502, "Получены некорректные данные о валютах.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unexpected error while fetching currency rates");
-                return StatusCode(500, "Internal server error");
+                _logger.LogError(ex, "Непредвиденная ошибка при получении курсов валют.");
+                return StatusCode(500, "Внутренняя ошибка сервера.");
             }
         }
     }

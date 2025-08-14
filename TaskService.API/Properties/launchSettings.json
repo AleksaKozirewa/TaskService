@@ -1,56 +1,3 @@
-//{
-//  "profiles": {
-//    "http": {
-//      "commandName": "Project",
-//      "launchBrowser": true,
-//      "launchUrl": "swagger",
-//      "environmentVariables": {
-//        "ASPNETCORE_ENVIRONMENT": "Development"
-//      },
-//      "dotnetRunMessages": true,
-//      "applicationUrl": "http://localhost:5062"
-//    },
-//    "https": {
-//      "commandName": "Project",
-//      "launchBrowser": true,
-//      "launchUrl": "swagger",
-//      "environmentVariables": {
-//        "ASPNETCORE_ENVIRONMENT": "Development"
-//      },
-//      "dotnetRunMessages": true,
-//      "applicationUrl": "https://localhost:7219;http://localhost:5062"
-//    },
-//    "IIS Express": {
-//      "commandName": "IISExpress",
-//      "launchBrowser": true,
-//      "launchUrl": "swagger",
-//      "environmentVariables": {
-//        "ASPNETCORE_ENVIRONMENT": "Development"
-//      }
-//    },
-//    "Container (Dockerfile)": {
-//      "commandName": "Docker",
-//      "launchBrowser": true,
-//      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-//      "environmentVariables": {
-//        "ASPNETCORE_HTTPS_PORTS": "8081",
-//        "ASPNETCORE_HTTP_PORTS": "8080"
-//      },
-//      "publishAllPorts": true,
-//      "useSSL": true
-//    }
-//  },
-//  "$schema": "http://json.schemastore.org/launchsettings.json",
-//  "iisSettings": {
-//    "windowsAuthentication": false,
-//    "anonymousAuthentication": true,
-//    "iisExpress": {
-//      "applicationUrl": "http://localhost:6895",
-//      "sslPort": 44374
-//    }
-//  }
-//}
-
 {
   "profiles": {
     "TaskService.API": {
@@ -60,19 +7,14 @@
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection": "Host=localhost;Port=5432;Database=taskdb;Username=postgres;Password=postgrespw"
+        "ConnectionStrings__DefaultConnection": "Host=localhost;Port=5433;Database=taskdb;Username=postgres;Password=postgrespw"
       }
     },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": false,
       "publishAllPorts": true,
-      "applicationUrl": "http://localhost:8080",
-      "useSSL": false,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection": "Host=postgres;Port=5432;Database=taskdb;Username=postgres;Password=postgrespw"
-      }
+      "useSSL": false
     }
   }
 }

@@ -1,12 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskService.Core.Interfaces;
 
 namespace TaskService.Core.Services
@@ -26,7 +20,7 @@ namespace TaskService.Core.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Overdue Task Background Service is starting.");
+            _logger.LogInformation("Фоновый сервис проверки просроченных задач запущен.");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -36,19 +30,20 @@ namespace TaskService.Core.Services
                     {
                         var taskRepository = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
 
-                        _logger.LogInformation("Checking for overdue tasks...");
+                        _logger.LogInformation("Проверка наличия просроченных задач...");
                         await taskRepository.MarkOverdueTasksAsync();
+                        _logger.LogInformation("Проверка просроченных задач завершена успешно.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error occurred while checking overdue tasks.");
+                    _logger.LogError(ex, "Ошибка при проверке просроченных задач.");
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
 
-            _logger.LogInformation("Overdue Task Background Service is stopping.");
+            _logger.LogInformation("Фоновый сервис проверки просроченных задач остановлен.");
         }
     }
 }

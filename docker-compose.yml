@@ -1,12 +1,3 @@
-# version: '3.4'
-
-# services:
-#   taskservice.api:
-#     image: ${DOCKER_REGISTRY-}taskserviceapi
-#     build:
-#       context: .
-#       dockerfile: TaskService.API/Dockerfile
-
 version: '3.4'
 
 services:

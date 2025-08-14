@@ -5,7 +5,7 @@ namespace TaskService.API.Models.Task
 {
     public class UpdateTaskRequest : CreateTaskRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Статус задачи обязателен")]
         public TaskStatus Status { get; set; }
     }
 }
