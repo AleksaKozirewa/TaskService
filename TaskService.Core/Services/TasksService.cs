@@ -41,7 +41,7 @@ namespace TaskService.Core.Services
 
         public async Task<TaskEntity> GetTaskByIdAsync(Guid id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id) ?? throw new KeyNotFoundException();
         }
 
         public async Task<TaskEntity> UpdateTaskAsync(Guid id, string title, string description, DateTime dueDate, TaskStatus status)

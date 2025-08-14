@@ -1,63 +1,97 @@
-//using Moq;
-//using TaskService.Core.Entities;
-//using TaskService.Core.Interfaces;
-//using TaskService.Core.Services;
-//using TaskStatus = TaskService.Core.Entities.TaskStatus;
+using Microsoft.Extensions.Logging;
+using Moq;
+using TaskService.Core.Entities;
+using TaskService.Core.Interfaces;
+using TaskService.Core.Services;
+using TaskStatus = TaskService.Core.Entities.TaskStatus;
 
-//namespace TaskService.Tests
-//{
-//    public class TaskServiceTests
-//    {
-//        private readonly Mock<ITaskRepository> _mockRepo;
-//        private readonly ITaskService _taskService;
+namespace TaskService.Tests
+{
+    public class TaskServiceTests
+    {
+        private readonly Mock<ITaskRepository> _mockRepository;
+        private readonly Mock<ILogger<TasksService>> _mockLogger;
+        private readonly TasksService _service;
 
-//        public TaskServiceTests()
-//        {
-//            _mockRepo = new Mock<ITaskRepository>();
-//            _taskService = new TasksService(_mockRepo.Object);
-//        }
+        public TaskServiceTests()
+        {
+            _mockRepository = new Mock<ITaskRepository>();
+            _mockLogger = new Mock<ILogger<TasksService>>();
+            _service = new TasksService(_mockRepository.Object, _mockLogger.Object);
+        }
 
-//        [Fact]
-//        public async Task CreateTask_ShouldReturnTask_WhenValidInput()
-//        {
-//            // Arrange
-//            var title = "Test Task";
-//            var description = "Test Description";
-//            var dueDate = DateTime.Now.AddDays(1);
-//            var expectedTask = new TaskEntity
-//            {
-//                Id = Guid.NewGuid(),
-//                Title = title,
-//                Description = description,
-//                DueDate = dueDate,
-//                Status = TaskStatus.New
-//            };
+        [Fact]
+        public async Task CreateTaskAsync_ShouldCreateTask_WhenValidData()
+        {
+            // Arrange
+            var testTitle = "Test Task";
+            var testDescription = "Test Description";
+            var testDueDate = DateTime.Now.AddDays(1);
+            var expectedTask = new TaskEntity
+            {
+                Title = testTitle,
+                Description = testDescription,
+                DueDate = testDueDate.ToUniversalTime(),
+                Status = TaskStatus.New
+            };
 
-//            _mockRepo.Setup(repo => repo.AddAsync(It.IsAny<TaskEntity>()))
-//                .ReturnsAsync(expectedTask);
+            _mockRepository.Setup(x => x.AddAsync(It.IsAny<TaskEntity>()))
+                          .ReturnsAsync(expectedTask);
 
-//            // Act
-//            var result = await _taskService.CreateTaskAsync(title, description, dueDate);
+            // Act
+            var result = await _service.CreateTaskAsync(testTitle, testDescription, testDueDate);
 
-//            // Assert
-//            Assert.NotNull(result);
-//            Assert.Equal(title, result.Title);
-//            Assert.Equal(description, result.Description);
-//            Assert.Equal(dueDate, result.DueDate);
-//            Assert.Equal(TaskStatus.New, result.Status);
-//        }
+            // Assert
+            Assert.Equal(expectedTask.Title, result.Title);
+            Assert.Equal(expectedTask.Description, result.Description);
+            Assert.Equal(expectedTask.DueDate, result.DueDate);
+            Assert.Equal(TaskStatus.New, result.Status);
+            _mockRepository.Verify(x => x.AddAsync(It.IsAny<TaskEntity>()), Times.Once);
+        }
 
-//        [Fact]
-//        public async Task UpdateTask_ShouldThrowException_WhenTaskNotFound()
-//        {
-//            // Arrange
-//            var taskId = Guid.NewGuid();
-//            _mockRepo.Setup(repo => repo.GetByIdAsync(taskId))
-//                .ReturnsAsync((TaskEntity)null);
+        [Fact]
+        public async Task GetTaskByIdAsync_ShouldReturnTask_WhenExists()
+        {
+            // Arrange
+            var taskId = Guid.NewGuid();
+            var expectedTask = new TaskEntity { Id = taskId, Title = "Test Task" };
 
-//            // Act & Assert
-//            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
-//                _taskService.UpdateTaskAsync(taskId, "New Title", "New Desc", DateTime.Now, TaskStatus.InProgress));
-//        }
-//    }
-//}
+            _mockRepository.Setup(x => x.GetByIdAsync(taskId))
+                          .ReturnsAsync(expectedTask);
+
+            // Act
+            var result = await _service.GetTaskByIdAsync(taskId);
+
+            // Assert
+            Assert.Equal(expectedTask.Id, result.Id);
+            Assert.Equal(expectedTask.Title, result.Title);
+            _mockRepository.Verify(x => x.GetByIdAsync(taskId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTaskByIdAsync_ShouldThrow_WhenNotFound()
+        {
+            // Arrange
+            var taskId = Guid.NewGuid();
+            _mockRepository.Setup(x => x.GetByIdAsync(taskId))
+                          .ReturnsAsync((TaskEntity)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
+                _service.GetTaskByIdAsync(taskId));
+        }
+
+        [Fact]
+        public async Task UpdateTaskAsync_ShouldThrow_WhenNotFound()
+        {
+            // Arrange
+            var taskId = Guid.NewGuid();
+            _mockRepository.Setup(x => x.GetByIdAsync(taskId))
+                          .ReturnsAsync((TaskEntity)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
+                _service.UpdateTaskAsync(taskId, "Title", "Desc", DateTime.Now, TaskStatus.New));
+        }
+    }
+}
