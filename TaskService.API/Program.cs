@@ -22,10 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register services
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskService, TasksService>();
-//builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-//builder.Services.AddScoped<ITaskService, TaskService>();
-//builder.Services.AddScoped<ICurrencyService, CurrencyService>();
-//builder.Services.AddHostedService<OverdueTaskBackgroundService>();
+builder.Services.AddHostedService<OverdueTaskBackgroundService>();
 
 builder.WebHost.UseUrls("http://*:80");
 
