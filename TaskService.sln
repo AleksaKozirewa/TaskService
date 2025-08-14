@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.API", "TaskService.API\TaskService.API.csproj", "{69E6CA2B-E616-428D-8F0F-14EB2004845A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService.API", "TaskService.API\TaskService.API.csproj", "{69E6CA2B-E616-428D-8F0F-14EB2004845A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Core", "TaskService.Core\TaskService.Core.csproj", "{431ED38C-B49C-4EE5-AEF0-00022D2EF904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService.Core", "TaskService.Core\TaskService.Core.csproj", "{431ED38C-B49C-4EE5-AEF0-00022D2EF904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Tests", "TaskService.Tests\TaskService.Tests.csproj", "{DCBE45DF-9F90-4823-982F-4B9D366DFD3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskService.Tests", "TaskService.Tests\TaskService.Tests.csproj", "{DCBE45DF-9F90-4823-982F-4B9D366DFD3B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7081339B-1937-409A-92CB-4BAB6D0A7B95}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF1BF777-1700-4832-BE85-3ED0D16414E6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
